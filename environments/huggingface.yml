@@ -19,6 +19,7 @@ dependencies:
   - bleach=4.1.0
   - pip
   - git=2.35.1
+  - scipy
   - sentencepiece
   - protobuf
   - marshmallow>=3.13
@@ -32,10 +33,10 @@ dependencies:
     - flask-ngrok
     - flask-cors
     - lupa==1.10
-    - transformers==4.28.*
+    - transformers==4.30.*
     - huggingface_hub==0.15.1
     - safetensors==0.3.1
-    - accelerate==0.18.0
+    - accelerate==0.20.3
     - git+https://github.com/VE-FORBRYDERNE/mkultra
     - flask-session
     - ansi2html
