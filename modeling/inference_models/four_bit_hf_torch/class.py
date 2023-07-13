@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from modeling.inference_models.generic_hf_torch.HFTorchModelBackend import HFTorchModelBackend
+from modeling.inference_models.generic_hf_torch.model_backend import HFTorchModelBackend
 
 model_backend_name = "Huggingface 4-Bit"
 model_backend_type = "Huggingface" #This should be a generic name in case multiple model backends are compatible (think Hugging Face Custom and Basic Hugging Face)
