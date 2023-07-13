@@ -90,6 +90,7 @@ class HFTorchInferenceModel(HFInferenceModel):
         self.lazy_load = True
         self.low_mem = False
         self.nobreakmodel = False
+        self.load_in_4bit = False
 
         self.post_token_hooks = [
             PostTokenHooks.stream_tokens,
@@ -394,6 +395,7 @@ class HFTorchInferenceModel(HFInferenceModel):
                         location,
                         offload_folder="accelerate-disk-cache",
                         torch_dtype=self._get_target_dtype(),
+                        load_in_4bit=self.load_in_4bit,
                         **tf_kwargs,
                     )
             except Exception as e:
@@ -409,10 +411,11 @@ class HFTorchInferenceModel(HFInferenceModel):
                     location,
                     offload_folder="accelerate-disk-cache",
                     torch_dtype=self._get_target_dtype(),
+                    load_in_4bit=self.load_in_4bit,
                     **tf_kwargs,
                 )
 
-            if not self.lazy_load:
+            if not self.lazy_load and not self.load_in_4bit:
                 # We need to move the model to the desired device
                 if (not self.usegpu) or torch.cuda.device_count() <= 0:
                     model = model.to("cpu")

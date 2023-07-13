@@ -1,4 +1,4 @@
-from __future__ import annotations
+from modeling.inference_models.hf_torch import HFTorchInferenceModel
 
 import os
 import json
@@ -13,13 +13,7 @@ import modeling.lazy_loader as lazy_loader
 import koboldai_settings
 from logger import logger
 
-
-from modeling.inference_models.hf_torch_4bit import HFTorch4BitInferenceModel
-
-model_backend_name = "Huggingface 4-Bit"
-model_backend_type = "Huggingface" #This should be a generic name in case multiple model backends are compatible (think Hugging Face Custom and Basic Hugging Face)
-
-class model_backend(HFTorch4BitInferenceModel):
+class HFTorchModelBackend(HFTorchInferenceModel):
     def _initialize_model(self):
         return
 
@@ -51,8 +45,13 @@ class model_backend(HFTorch4BitInferenceModel):
             "low_cpu_mem_usage": True,
         }
 
-        self.lazy_load = False
-        self.breakmodel = False
+        if self.model_type == "gpt2":
+            # We must disable low_cpu_mem_usage and if using a GPT-2 model
+            # because GPT-2 is not compatible with this feature yet.
+            tf_kwargs.pop("low_cpu_mem_usage", None)
+
+            # Also, lazy loader doesn't support GPT-2 models
+            self.lazy_load = False
 
         logger.debug(
             "lazy_load: {} hascuda: {} breakmodel: {} nobreakmode: {}".format(
