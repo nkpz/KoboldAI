@@ -4,6 +4,7 @@ import copy
 import requests
 from typing import Iterable, List
 from tqdm.auto import tqdm
+from LlamaPartNTKScaledRotaryEmbedding import LlamaPartNTKScaledRotaryEmbedding
 
 import transformers
 from transformers import (
@@ -124,6 +125,11 @@ def patch_transformers_generation() -> None:
     )
     transformers.generation.logits_process.NoBadWordsLogitsProcessor.__init__ = new_init
 
+def patch_transformers_rotary_embedding() -> None:
+    print("Patching NTKV2 Rotary Embedding...")
+    transformers.models.llama.modeling_llama.LlamaRotaryEmbedding = (
+        LlamaPartNTKScaledRotaryEmbedding
+    )
 
 def patch_transformers() -> None:
     patch_transformers_download()
@@ -131,3 +137,5 @@ def patch_transformers() -> None:
 
     # Doesn't do anything for TPU
     patch_transformers_generation()
+
+    patch_transformers_rotary_embedding()

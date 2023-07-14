@@ -182,7 +182,7 @@ gensettingstf = [
 	"label": "Context Tokens",
 	"id": "settknmax", 
 	"min": 512,
-	"max": 2048,
+	"max": 8192,
 	"step": 8,
 	"default": 1024,
     "tooltip": "Number of context tokens to submit to the AI for sampling. Make sure this is higher than Output Length. Higher values increase VRAM/RAM usage.",
